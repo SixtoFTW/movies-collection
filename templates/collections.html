@@ -5,8 +5,8 @@
 {% block content %}
 <div class="container">
     <div class="row">
-  <h1 class="heading">My Collections</h1>
-  <p class="description">Actors from my movie collection.</p>
+  <h1 class="heading">Mis Colecciones</h1>
+  <p class="description">Lista de colecciones de mis películas vistas.</p>
   {% for item in collections: %}
   <a class="card" style="width: calc(33% - 3rem)" href="{{url_for('home')}}">
     <div class="front" style="background-image: url('{{item[0].img_url}}');">

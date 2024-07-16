@@ -4,8 +4,8 @@
 
 {% block content %}
 <div class="container">
-  <h1 class="heading">My Top 10 Movies</h1>
-  <p class="description">These are my all-time favourite movies.</p>
+  <h1 class="heading">Mi Top 10 Películas</h1>
+  <p class="description">Estas son las películas que más me gustaron.</p>
   {% for item in all_movies: %}
   <div class="card" style="width: calc(33% - 3rem)">
     <div class="front" style="background-image: url('{{item.img_url}}');">
@@ -32,7 +32,7 @@
   {% endfor %}
 </div>
 <div class="container text-center add">
-<a href="{{url_for('add')}}" class="button">Add Movie</a>
+<a href="{{url_for('add')}}" class="button">Agregar Película</a>
 </div>
 
 {% endblock %}

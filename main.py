@@ -99,29 +99,28 @@ class Coleccion(db.Model):
 
 # Mis clases para formularios web
 class EditForm(FlaskForm):
-    rating = StringField("Your Rating Out of 10 e.g. 7.5", validators=[DataRequired()])
-    review = StringField("Your Review")
-    fecha_visto = DateField(label="Date You Saw it")
-    submit = SubmitField(label="Done")
+    rating = StringField("Tu Rating de 1 a 10 e.g. 7.5", validators=[DataRequired()])
+    review = StringField("Comentarios")
+    fecha_visto = DateField(label="Fecha visto")
+    submit = SubmitField(label="Listo")
 
 
 class AddForm(FlaskForm):
-    movie = StringField(label="Movie Title", validators=[DataRequired()])
-    submit = SubmitField(label="Add Movie")
+    movie = StringField(label="Titulo de la Película", validators=[DataRequired()])
+    submit = SubmitField(label="Agregar Película")
 
+
+genres = [("Action",), ("Adventure",), ("Animation",), ("Comedy",), ("Crime",), ("Documentary",), ("Drama",),
+          ("Family",), ("Fantasy",), ("History",), ("Horror",), ("Music",), ("Mystery",), ("Romance",),
+          ("Science Fiction",), ("TV Movie",), ("Thriller",), ("War",), ("Western",)]
 
 # Create table schema in the database. Requires application context.
 with app.app_context():
     db.create_all()
-#     new_movie = Movies(title="Phone Booth",
-#                         year=2002,
-#                         description="Publicist Stuart Shepard finds himself trapped in a phone booth, pinned down by an extortionist's sniper rifle. Unable to leave or receive outside help, Stuart's negotiation with the caller leads to a jaw-dropping climax.",
-#                         rating=7.3,
-#                         ranking=10,
-#                         review="My favourite character was the caller.",
-#                         img_url="https://image.tmdb.org/t/p/w500/tjrX2oWRCM3Tvarz38zlZM7Uc10.jpg")
-#     db.session.add(new_movie)
-#     db.session.commit()
+    if Genero.query.count() == 0:  # Solo agregar si la tabla está vacía
+        genre_objects = [Genero(genero=genre[0]) for genre in genres]
+        db.session.bulk_save_objects(genre_objects)  # Agrega todos los objetos de una vez
+        db.session.commit()
 
 
 @app.route("/")
@@ -143,18 +142,13 @@ def top_movies():
 
 @app.route("/actorsall")
 def actor_all():
-    data_actors = db.session.execute(db.session.query(Actor, func.count(Casting.actor_id)).outerjoin(Casting, Actor.actor_id == Casting.actor_id).group_by(Actor.actor_id).order_by(func.count(Casting.actor_id).desc()).limit(10))
-    # movies_db = sqlite3.connect(DB_ADDRESS)
-    # cursor = movies_db.cursor()
-    # cursor.execute("SELECT actor.*, COUNT(casting.actor_id) as num_peli FROM actor LEFT JOIN casting on actor.actor_id = casting.actor_id GROUP BY casting.actor_id ORDER BY num_peli DESC LIMIT 10")
-    # data = cursor.fetchall()
-    # movies_db.close()
+    data_actors = db.session.query(Actor, func.count(Casting.actor_id)).outerjoin(Casting, Actor.actor_id == Casting.actor_id).group_by(Actor.actor_id).order_by(func.count(Casting.actor_id).desc()).limit(10).all()
     return render_template("actor_all.html", all_actors=data_actors, active_page='actor_all')
 
 
 @app.route("/collections")
 def collections():
-    data_collection = db.session.execute(db.session.query(Coleccion, func.count(Movies.coleccion_id)).outerjoin(Movies, Coleccion.coleccion_id == Movies.coleccion_id).group_by(Coleccion.coleccion_id)).fetchall()
+    data_collection = db.session.query(Coleccion, func.count(Movies.coleccion_id)).outerjoin(Movies, Coleccion.coleccion_id == Movies.coleccion_id).group_by(Coleccion.coleccion_id).all()
     return render_template("collections.html", collections=data_collection, active_page='collections')
 
 
@@ -163,7 +157,6 @@ def details_movie(movie_id):
     movie_data = db.session.execute(db.select(Movies).where(Movies.id == movie_id)).scalar()
     data_casting = db.session.execute(db.select(Casting.character, Actor.actor_name, Actor.img_url).join(Actor, Casting.actor_id == Actor.actor_id, isouter=True).where(Casting.movie_id == movie_id)).fetchall()
     return render_template("movie_details.html", casting=data_casting, movie=movie_data)
-
 
 
 @app.route("/edit", methods=["GET", "POST"])

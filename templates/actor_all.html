@@ -5,8 +5,8 @@
 {% block content %}
 <div class="container">
     <div class="row">
-  <h1 class="heading">Actors of my Movies</h1>
-  <p class="description">Actors from my movie collection.</p>
+  <h1 class="heading">Actores De Mis Películas</h1>
+  <p class="description">Ordenado por el número de películas que protagonizan.</p>
   {% for item in all_actors: %}
   <div class="card" >
     <div class="front" style="background-image: url('{{item[0].img_url}}');">

@@ -5,10 +5,10 @@
 {% block content %}
 <div class="container">
     <div class="row">
-  <h1 class="heading">My Most Recent Movies</h1>
-  <p class="description">These are all the movies i have watch.</p>
+  <h1 class="heading">Mis Películas Más Recientes</h1>
+  <p class="description">Una lista de mis ultimas películas vistas.</p>
         <div class="container text-center add">
-        <a href="{{url_for('add')}}" class="button">Add Movie</a>
+        <a href="{{url_for('add')}}" class="button">Agregar Película</a>
         </div>
   {% for item in all_movies: %}
   <div class="card">
@@ -26,8 +26,8 @@
             {{item.description}}<br>Genre: {{item.genero_id}}
         </p>
 
-        <a href="{{url_for('edit', movie_id=item.id)}}" class="button">Update</a>
-        <a href="{{url_for('delete', movie_id=item.id)}}" class="button delete-button">Delete</a>
+        <a href="{{url_for('edit', movie_id=item.id)}}" class="button">Actualizar</a>
+        <a href="{{url_for('delete', movie_id=item.id)}}" class="button delete-button">Borrar</a>
 
       </div>
     </div>
