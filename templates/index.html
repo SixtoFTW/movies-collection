@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}My Top 10 Movies{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+  <h1 class="heading">My Most Recent Movies</h1>
+  <p class="description">These are all the movies i have watch.</p>
+        <div class="container text-center add">
+        <a href="{{url_for('add')}}" class="button">Add Movie</a>
+        </div>
+  {% for item in all_movies: %}
+  <div class="card">
+    <div class="front" style="background-image: url('{{item.img_url}}');">
+    </div>
+    <div class="back">
+      <div>
+    <a class="title"  href="{{url_for('details_movie', movie_id=item.id)}}">{{item.title}} <span class="release_date">({{item.year}})</span></a>
+        <div class="rating">
+            <label>{{item.rating}}</label>
+          <i class="fas fa-star star"></i>
+        </div>
+          <p class="review">{{item.review}}<br>Chun-chie yu ({{item.fecha_visto}})</p>
+        <p class="overview">
+            {{item.description}}<br>Genre: {{item.genero_id}}
+        </p>
+
+        <a href="{{url_for('edit', movie_id=item.id)}}" class="button">Update</a>
+        <a href="{{url_for('delete', movie_id=item.id)}}" class="button delete-button">Delete</a>
+
+      </div>
+    </div>
+   </div>
+  {% endfor %}
+    </div>
+</div>
+
+
+{% endblock %}

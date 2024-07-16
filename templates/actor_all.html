@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}My Top 10 Movies{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+  <h1 class="heading">Actors of my Movies</h1>
+  <p class="description">Actors from my movie collection.</p>
+  {% for item in all_actors: %}
+  <div class="card" >
+    <div class="front" style="background-image: url('{{item[0].img_url}}');">
+        <p class="large">{{item[1]}}</p>
+    </div>
+    <div class="back">
+      <div>
+    <div class="title">{{item[0].actor_name}} </div>
+        <div class="rating">
+            <label> </label>
+          <i class="fas fa-star star"></i>
+        </div>
+          <p class="review"> </p>
+        <p class="overview">
+        </p>
+      </div>
+    </div>
+   </div>
+  {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
