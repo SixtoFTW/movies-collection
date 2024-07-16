@@ -41,11 +41,11 @@ class Movies(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     title: Mapped[str] = mapped_column(String(250), unique=True, nullable=False)
     year: Mapped[int] = mapped_column(Integer, nullable=False)
-    description: Mapped[str] = mapped_column(String(250), nullable=False)
+    description: Mapped[str] = mapped_column(String, nullable=False)
     rating: Mapped[float] = mapped_column(Float, nullable=True)
     ranking: Mapped[int] = mapped_column(Integer, nullable=True)
     review: Mapped[str] = mapped_column(String(250), nullable=True)
-    img_url: Mapped[str] = mapped_column(String(250), nullable=False)
+    img_url: Mapped[str] = mapped_column(String, nullable=False)
     fecha_visto: Mapped[str] = mapped_column(DATE, nullable=True)
     genero_id: Mapped[str] = mapped_column(String(250), nullable=True)
     coleccion_id: Mapped[int] = mapped_column(Integer, db.ForeignKey("coleccion_tabla.coleccion_id"))
@@ -75,7 +75,7 @@ class Actor(db.Model):
     actor_id: Mapped[int] = mapped_column(Integer, primary_key=True, nullable=False)
     actor_name: Mapped[str] = mapped_column(String(250), nullable=False, unique=True)
     gender: Mapped[int] = mapped_column(Integer, nullable=False)
-    img_url: Mapped[str] = mapped_column(String(250))
+    img_url: Mapped[str] = mapped_column(String)
     movie_cast = relationship("Casting", back_populates="actor_name")
 
 
